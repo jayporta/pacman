@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Dependency-free checks. These run today, before any tooling exists.
+  # ---------------------------------------------------------------------------
+
+  vendor-integrity:
+    name: Vendored files unmodified
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # js/jquery.js and js/jquery-buzz.js are third-party and must stay
+      # byte-identical until T6.3 deletes them. A formatter sweep (T4.6) or a
+      # well-meaning lint --fix would otherwise silently rewrite them.
+      - name: Assert SHA-256
+        run: |
+          cat > /tmp/vendor.sha256 <<'EOF'
+          61c6caebd23921741fb5ffe6603f16634fca9840c2bf56ac8201e9264d6daccf  js/jquery.js
+          410e0b5736db0983455881e4d355b36098eee6eca785ca15ff36761474899991  js/jquery-buzz.js
+          EOF
+          sha256sum -c /tmp/vendor.sha256
+
+  local-assets:
+    name: Local assets resolve
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Every local src=/href= in index.html must point at a file that exists.
+      # Catches a deleted script tag left behind during the module conversion.
+      - name: Check every local src/href exists
+        run: |
+          rc=0
+          refs=$(grep -oE '(src|href)="[^"]+"' index.html \
+                 | sed -E 's/^(src|href)="//; s/"$//' \
+                 | grep -vE '^(https?:)?//|^javascript:|^#|^data:' \
+                 | sort -u)
+          for ref in $refs; do
+            if [ ! -e "$ref" ]; then
+              echo "::error file=index.html::missing local asset: $ref"
+              rc=1
+            fi
+          done
+          if [ "$rc" -eq 0 ]; then echo "all local assets resolve"; fi
+          exit $rc
+
+  # ---------------------------------------------------------------------------
+  # Tooling jobs. Written ahead of the tooling itself (Epic 2), so each is
+  # guarded on package.json and skips cleanly until T2.1-T2.3 land.
+  # T2.4 removes the guards once they are real.
+  # ---------------------------------------------------------------------------
+
+  check:
+    name: ${{ matrix.task }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        task: [lint, stylelint, typecheck, test, build]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Is there a package.json yet?
+        id: probe
+        run: |
+          if [ -f package.json ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::no package.json yet - ${{ matrix.task }} skipped until Epic 2 (T2.1-T2.3)"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.probe.outputs.ready == 'true'
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        if: steps.probe.outputs.ready == 'true'
+        run: npm ci
+
+      - name: Run ${{ matrix.task }}
+        if: steps.probe.outputs.ready == 'true'
+        run: npm run ${{ matrix.task }} --if-present
