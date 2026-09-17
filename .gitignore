@@ -1,1 +1,14 @@
 .remember/
+
+# dependencies and build output (Epic 2 onward)
+node_modules/
+dist/
+
+# tooling caches
+.vite/
+coverage/
+playwright-report/
+test-results/
+
+# editor and OS noise
+.DS_Store
