@@ -263,33 +263,6 @@ h3 {
 	right: 5px;
 }
 
-.github { 
-	position: absolute;
-	bottom: 0px;
-	left: 5px;
-}
-
-.putchu { 
-	position: absolute;
-	top: 450px;
-	left: 130px;
-	background-color: #4c6441;
-	padding: 10px 25px 40px 95px;
-	text-transform: uppercase;
-}
-.putchu img { 
-	position: absolute; 
-	bottom: -5px;
-	left: 5px;
-}
-#panel .putchu { 
-	top: 0px;
-	right: 5px;	
-	left: auto;
-	font-size: 16px;
-	padding: 10px 25px 30px 65px;
-}
-
 .help-button { 
 	position: absolute;
 	text-align: center;
@@ -372,7 +345,7 @@ h3 {
 }
 
 @media screen and (max-width:1024px), screen and (min-device-width : 768px) and (max-device-width : 1024px) { 
-	#home .help-button, #panel .help-button, #home .github, #sound, .sound { 
+	#home .help-button, #panel .help-button, #sound, .sound { 
 		display: none;
 	}
 	#panel, #home { 
@@ -390,7 +363,7 @@ h3 {
 	#control-up-big, #control-down-big, #control-left-big, #control-right-big { 
 		display: inline; 
 	} 
-	#home .help-button, #panel .help-button, #home .github, #sound, .sound { 
+	#home .help-button, #panel .help-button, #sound, .sound { 
 		display: none;
 	}
 	h1, #canvas-panel-title-pacman { 
@@ -404,7 +377,7 @@ h3 {
 	#control-up-big, #control-down-big, #control-left-big, #control-right-big { 
 		display: inline; 
 	} 
-	h1, #canvas-panel-title-pacman, #control-up-second, #control-down-second, #home .help-button, #panel .help-button, #home .github, #sound, .sound { 
+	h1, #canvas-panel-title-pacman, #control-up-second, #control-down-second, #home .help-button, #panel .help-button, #sound, .sound { 
 		display: none;
 	}
 	#score, #highscore { 

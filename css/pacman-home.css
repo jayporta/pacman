@@ -2,19 +2,6 @@
 	text-align: center;
 	font-size: 78px;
 }
-#home h3 { 
-	position: absolute;
-	margin: auto;
-	left: 0px;
-	right: 0px;
-	bottom: 15px;
-	text-align: center;
-}
-#home h3 em { 
-	font-size: inherit;
-	font-style: inherit;
-	color: #fff200;
-}
 #canvas-home-title-pacman { 
 	background-color: #000;
 	position: absolute;
