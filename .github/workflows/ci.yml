@@ -80,7 +80,7 @@ jobs:
         run: |
           if git grep -niE 'googletagmanager|gtag\(|dataLayer|UA-[0-9]{4,}' -- \
                . ':!*.md' ':!LICENSE' ':!.github/' \
-               ':!js/jquery.js' ':!js/jquery-buzz.js' ':!js/jquery-mobile.js'; then
+               ':!js/jquery.js' ':!js/jquery-buzz.js'; then
             echo "::error::analytics snippet reintroduced - see T1.1 (#3)"
             exit 1
           fi
@@ -92,7 +92,7 @@ jobs:
         run: |
           if git grep -niE 'putchu|firebaseapp' -- \
                . ':!*.md' ':!LICENSE' ':!.github/' \
-               ':!js/jquery.js' ':!js/jquery-buzz.js' ':!js/jquery-mobile.js'; then
+               ':!js/jquery.js' ':!js/jquery-buzz.js'; then
             echo "::error::upstream ad link or dead host reintroduced - see T1.2 (#4)"
             exit 1
           fi
@@ -103,7 +103,7 @@ jobs:
         run: |
           if git grep -niE 'panepinto' -- \
                . ':!*.md' ':!LICENSE' ':!.github/' \
-               ':!js/jquery.js' ':!js/jquery-buzz.js' ':!js/jquery-mobile.js'; then
+               ':!js/jquery.js' ':!js/jquery-buzz.js'; then
             echo "::error::upstream branding reintroduced in the UI - see T1.2 (#4)"
             exit 1
           fi
