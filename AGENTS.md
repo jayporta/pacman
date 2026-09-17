@@ -4,7 +4,7 @@ This file provides guidance to AI agents when working with code in this reposito
 
 ## What this is
 
-A 2015 Pac-Man clone in vanilla HTML5 Canvas + jQuery 1.8.3, forked from `luciopanepinto/pacman`. It was deliberately kept as an untouched legacy codebase to serve as a migration testbed: review it, plan cleanups, then modernise it in reviewable chunks.
+A 2015 Pac-Man clone in vanilla HTML5 Canvas + jQuery 1.8.3, forked from `luciopanepinto/pacman`. It was deliberately kept as an untouched legacy codebase to serve as a migration testbed: review it, plan cleanups, then modernize it in reviewable chunks.
 
 The target is **Web Components (Lit) + TypeScript + SCSS, no framework**. `README.md` still says React; that is stale and is corrected in T1.4.
 
